@@ -18,8 +18,11 @@ public class Recipe {
     private String source;
     private String url;
     private String directions;
-    //todo add
-    //private Difficulty difficulty;
+
+    //EnumType.ORDINAL is default, it will persists enum values as 1, 2, 3... to db
+    //STRING will persists the values as strings, ORDINAL may break if we update Difficulty with new values
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     //Lob - large object (storage in database)
     @Lob //will save this field in BLOB type in db
@@ -120,5 +123,13 @@ public class Recipe {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }
