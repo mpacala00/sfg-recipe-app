@@ -13,7 +13,9 @@ public class Ingredient {
     private String description;
     private BigDecimal amount;
 
-    //private UnitOfMeasure uom
+    //EAGER loads it every time Ingredient is loaded (default behaviour but shows intent)
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasure uom;
 
     @ManyToOne
     private Recipe recipe;
@@ -50,4 +52,11 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
+    public UnitOfMeasure getUom() {
+        return uom;
+    }
+
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
+    }
 }
