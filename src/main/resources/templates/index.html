@@ -7,5 +7,36 @@
 <body>
     <h1>My recipeXD</h1>
 
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>description</th>
+            <th>prepTime</th>
+            <th>cookTime</th>
+            <th>servings</th>
+            <th>url</th>
+            <th>directions</th>
+            <th>difficulty</th>
+            <th>notes</th>
+            <th>ingredients</th>
+            <th>categories</th>
+        </tr>
+        <tr th:each="recipe : ${recipes}">
+
+            <td th:text="${recipe.id}">ID KSIAZKI</td>
+            <td th:text="${recipe.description}">TYTUL KSIAZKI</td>
+            <td th:text="${recipe.prepTime}">AUTOR</td>
+            <td th:text="${recipe.cookTime}">WYDAWCA</td>
+            <td th:text="${recipe.servings}">OPIS</td>
+            <td th:text="${recipe.url}"></td>
+            <td th:text="${recipe.directions}"></td>
+            <td th:text="${recipe.difficulty}"></td>
+            <td th:text="${recipe.notes}"></td>
+            <td th:text="${recipe.ingredients}"></td>
+            <td th:text="${recipe.categories}"></td>
+
+        </tr>
+    </table>
+
 </body>
 </html>
