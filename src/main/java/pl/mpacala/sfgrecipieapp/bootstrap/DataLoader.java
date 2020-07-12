@@ -2,16 +2,20 @@ package pl.mpacala.sfgrecipieapp.bootstrap;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.mpacala.sfgrecipieapp.model.Difficulty;
-import pl.mpacala.sfgrecipieapp.model.Ingredient;
-import pl.mpacala.sfgrecipieapp.model.Recipe;
+import pl.mpacala.sfgrecipieapp.model.*;
 import pl.mpacala.sfgrecipieapp.repositories.CategoryRepository;
 import pl.mpacala.sfgrecipieapp.repositories.RecipeRepository;
 import pl.mpacala.sfgrecipieapp.repositories.UnitOfMeasureRepository;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/*
+ * Ingredients and categories wouldn't show up because only their ids were persisted to recipe repo
+ * what was necessary is adding Recipe field into both category and ingredient constructor
+ */
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -27,34 +31,93 @@ public class DataLoader implements CommandLineRunner {
         this.unitOfMeasureRepository = unitOfMeasureRepository;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+    private List<Recipe> getRecipes() {
+
+        List<Recipe> recipes = new ArrayList<>(2);
+
+        //retrieving optionals from database
+        Optional<UnitOfMeasure> teaspoonOpt = unitOfMeasureRepository.findByUnit("Teaspoon");
+
+        //pretty ugly code. Too bad!
+        if(!teaspoonOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> tablespoonOpt = unitOfMeasureRepository.findByUnit("Tablespoon");
+
+        if(!tablespoonOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> cupOpt = unitOfMeasureRepository.findByUnit("Cup");
+
+        if(!cupOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> pinchOpt = unitOfMeasureRepository.findByUnit("Pinch");
+
+        if(!pinchOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> ounceOpt = unitOfMeasureRepository.findByUnit("Ounce");
+
+        if(!ounceOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> dashOpt = unitOfMeasureRepository.findByUnit("Dash");
+
+        if(!dashOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> cloveOpt = unitOfMeasureRepository.findByUnit("Clove");
+
+        if(!cloveOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> pintOpt = unitOfMeasureRepository.findByUnit("Pint");
+
+        if(!pintOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        Optional<UnitOfMeasure> eachOpt = unitOfMeasureRepository.findByUnit("Each");
+
+        if(!eachOpt.isPresent()) {
+            throw new RuntimeException("Expected unit not found.");
+        }
+
+        //getting uom optionals
+        UnitOfMeasure teaspoonUom = teaspoonOpt.get();
+        UnitOfMeasure tablespoonUom = tablespoonOpt.get();
+        UnitOfMeasure cupUom = cupOpt.get();
+        UnitOfMeasure pinchUom = pinchOpt.get();
+        UnitOfMeasure ounceUom = ounceOpt.get();
+        UnitOfMeasure dashUom = dashOpt.get();
+        UnitOfMeasure cloveUom = cloveOpt.get();
+        UnitOfMeasure pintUom = pintOpt.get();
+        UnitOfMeasure eachUom = eachOpt.get();
+
+        //setting up the optionals for categories
+        Optional<Category> americanOpt = categoryRepository.findByDescription("American");
+        if(!americanOpt.isPresent()) {
+            throw new RuntimeException("Expected category not found.");
+        }
+
+        Optional<Category> mexicanOpt = categoryRepository.findByDescription("Mexican");
+        if(!mexicanOpt.isPresent()) {
+            throw new RuntimeException("Expected category not found.");
+        }
+
+        //getting the categories
+        Category americanCat = americanOpt.get();
+        Category mexicanCat = mexicanOpt.get();
 
         Recipe guacamole = new Recipe();
-        //Guac is a mexican recipe
-        guacamole.getCategories().add(categoryRepository.findByDescription("Mexican").get());
-        //use .get() when dealing with Optional<>
-
-        //ingredient -> description, amount (BigDecimal), UnitOfMeasure uom
-        Set<Ingredient> guacamoleIngredients = new HashSet<>();
-        guacamoleIngredients.add(new Ingredient("ripe avocado", new BigDecimal(2), null));
-        guacamoleIngredients.add(new Ingredient("salt", new BigDecimal(0.25),
-                unitOfMeasureRepository.findByUnit("Teaspoon").get()));
-        guacamoleIngredients.add(new Ingredient("fresh lime juice", new BigDecimal(1),
-                unitOfMeasureRepository.findByUnit("Tablespoon").get()));
-        guacamoleIngredients.add(new Ingredient("minced red onion", new BigDecimal(2),
-                unitOfMeasureRepository.findByUnit("Tablespoon").get()));
-        guacamoleIngredients.add(new Ingredient("minced serrano chili", new BigDecimal(1), null));
-        guacamoleIngredients.add(new Ingredient("finely chopped silantro", new BigDecimal(2),
-                unitOfMeasureRepository.findByUnit("Tablespoon").get()));
-        guacamoleIngredients.add(new Ingredient("black pepper", new BigDecimal(1),
-                unitOfMeasureRepository.findByUnit("Dash").get()));
-        guacamoleIngredients.add(new Ingredient("ripe tomato", new BigDecimal(0.5), null));
-        guacamoleIngredients.add(new Ingredient("red radish for garnish", new BigDecimal(1), null));
-        guacamoleIngredients.add(new Ingredient("tortilla chips to serve", new BigDecimal(1), null));
-
-        guacamole.setIngredients(guacamoleIngredients);
-
         guacamole.setDifficulty(Difficulty.EASY);
         guacamole.setDescription("Simple and easy way to prepare delicious guacamole");
         guacamole.setPrepTime(10);
@@ -62,25 +125,52 @@ public class DataLoader implements CommandLineRunner {
         guacamole.setServings(2);
         guacamole.setSource("simplyrecipes.com");
         guacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
-        guacamole.setDirections("1 Cut the avocado, remove flesh: Cut the avocados in half." +
-                " Remove the pit. Score the inside of the avocado with a blunt knife" +
-                " and scoop out the flesh with a spoon." +
-                " (See How to Cut and Peel an Avocado.) Place in a bowl.");
-        //too long:
-        /*
-        * 2 Mash with a fork: Using a fork, roughly mash the avocado." +
-                " (Don't overdo it! The guacamole should be a little chunky.)\n" +
+
+        guacamole.setDirections("1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon" +
+                "\n" +
+                "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)" +
+                "\n" +
                 "3 Add salt, lime juice, and the rest: Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown.\n" +
                 "Add the chopped onion, cilantro, black pepper, and chiles. Chili peppers vary individually in their hotness. So, start with a half of one chili pepper and add to the guacamole to your desired degree of hotness.\n" +
                 "Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste.\n" +
+                "4 Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.\n" +
                 "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.\n" +
-                "4 Serve: Serve immediately, or if making a few hours ahead," +
-                " place plastic wrap on the surface of the guacamole and" +
-                " press down to cover it and to prevent air reaching it." +
-                " (The oxygen in the air causes oxidation which will turn the guacamole brown.)" +
-                " Refrigerate until ready to serve.*/
+                "\n" +
+                "\n" +
+                "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd");
 
-        recipeRepository.save(guacamole);
+        Notes guacamoleNotes = new Notes();
+        guacamoleNotes.setRecipeNotes("The best guacamole keeps it simple: just ripe avocados," +
+                " salt, a squeeze of lime, onions, chiles, cilantro, and some chopped tomato." +
+                " Serve it as a dip at your next party or spoon it on top of tacos for an easy" +
+                " dinner upgrade.");
+
+        guacamoleNotes.setRecipe(guacamole);
+        guacamole.setNotes(guacamoleNotes);
+
+
+        //setting ingredients
+        guacamole.getIngredients().add(new Ingredient("ripe avocados", new BigDecimal(2), eachUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("kosher salt", new BigDecimal(.5), teaspoonUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("fresh lime or lemon juice", new BigDecimal(2), tablespoonUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("minced red onion", new BigDecimal(2), tablespoonUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("serrano chilli", new BigDecimal(2), eachUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("cilantro", new BigDecimal(2), tablespoonUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("black pepper", new BigDecimal(2), dashUom, guacamole));
+        guacamole.getIngredients().add(new Ingredient("ripe tomato", new BigDecimal(.5), eachUom, guacamole));
+
+        guacamole.getCategories().add(americanCat);
+        guacamole.getCategories().add(mexicanCat);
+
+        recipes.add(guacamole);
+
+        return recipes;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        recipeRepository.saveAll(getRecipes());
         System.out.println("Recipes saved to repo");
 
     }

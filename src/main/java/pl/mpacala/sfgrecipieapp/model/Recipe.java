@@ -18,6 +18,8 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
     //EnumType.ORDINAL is default, it will persists enum values as 1, 2, 3... to db

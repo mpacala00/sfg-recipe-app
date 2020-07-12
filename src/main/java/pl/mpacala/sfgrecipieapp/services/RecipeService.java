@@ -1,7 +1,10 @@
 package pl.mpacala.sfgrecipieapp.services;
 
-import org.springframework.stereotype.Service;
+import pl.mpacala.sfgrecipieapp.model.Recipe;
 
-@Service
-public class RecipeService {
+import java.util.Set;
+
+public interface RecipeService {
+
+    Set<Recipe> getRecipes();
 }
