@@ -145,19 +145,19 @@ public class DataLoader implements CommandLineRunner {
                 " Serve it as a dip at your next party or spoon it on top of tacos for an easy" +
                 " dinner upgrade.");
 
-        guacamoleNotes.setRecipe(guacamole);
+        //guacamoleNotes.setRecipe(guacamole); no longer needed
         guacamole.setNotes(guacamoleNotes);
 
 
         //setting ingredients
-        guacamole.getIngredients().add(new Ingredient("ripe avocados", new BigDecimal(2), eachUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("kosher salt", new BigDecimal(.5), teaspoonUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("fresh lime or lemon juice", new BigDecimal(2), tablespoonUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("minced red onion", new BigDecimal(2), tablespoonUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("serrano chilli", new BigDecimal(2), eachUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("cilantro", new BigDecimal(2), tablespoonUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("black pepper", new BigDecimal(2), dashUom, guacamole));
-        guacamole.getIngredients().add(new Ingredient("ripe tomato", new BigDecimal(.5), eachUom, guacamole));
+        guacamole.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
+        guacamole.addIngredient(new Ingredient("kosher salt", new BigDecimal(.5), teaspoonUom));
+        guacamole.addIngredient(new Ingredient("fresh lime or lemon juice", new BigDecimal(2), tablespoonUom));
+        guacamole.addIngredient(new Ingredient("minced red onion", new BigDecimal(2), tablespoonUom));
+        guacamole.addIngredient(new Ingredient("serrano chilli", new BigDecimal(2), eachUom));
+        guacamole.addIngredient(new Ingredient("cilantro", new BigDecimal(2), tablespoonUom));
+        guacamole.addIngredient(new Ingredient("black pepper", new BigDecimal(2), dashUom));
+        guacamole.addIngredient(new Ingredient("ripe tomato", new BigDecimal(.5), eachUom));
 
         guacamole.getCategories().add(americanCat);
         guacamole.getCategories().add(mexicanCat);
