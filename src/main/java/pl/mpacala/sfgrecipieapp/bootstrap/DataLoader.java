@@ -1,5 +1,6 @@
 package pl.mpacala.sfgrecipieapp.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.mpacala.sfgrecipieapp.model.*;
@@ -17,7 +18,9 @@ import java.util.Optional;
  * what was necessary is adding Recipe field into both category and ingredient constructor
  */
 
+@Slf4j
 @Component
+//@Transactional //in case of an error
 public class DataLoader implements CommandLineRunner {
 
     private final RecipeRepository recipeRepository;
@@ -162,6 +165,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         recipeRepository.saveAll(getRecipes());
+        log.debug("bootstrap debug logging");
         System.out.println("Recipes saved to repo");
 
     }

@@ -1,7 +1,12 @@
 package pl.mpacala.sfgrecipieapp.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
+@Data
+@EqualsAndHashCode(exclude = "recipe")
 @Entity
 public class Notes {
 
@@ -14,28 +19,4 @@ public class Notes {
 
     @Lob //If data is text and is not enough to save in VARCHAR, then that data should be saved in CLOB
     private String recipeNotes;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    public String getRecipeNotes() {
-        return recipeNotes;
-    }
-
-    public void setRecipeNotes(String recipeNotes) {
-        this.recipeNotes = recipeNotes;
-    }
 }
