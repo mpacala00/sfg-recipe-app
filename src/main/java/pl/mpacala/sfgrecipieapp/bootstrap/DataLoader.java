@@ -37,56 +37,47 @@ public class DataLoader implements CommandLineRunner {
 
         //retrieving optionals from database
         Optional<UnitOfMeasure> teaspoonOpt = unitOfMeasureRepository.findByUnit("Teaspoon");
-
         //pretty ugly code. Too bad!
         if(!teaspoonOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> tablespoonOpt = unitOfMeasureRepository.findByUnit("Tablespoon");
-
         if(!tablespoonOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> cupOpt = unitOfMeasureRepository.findByUnit("Cup");
-
         if(!cupOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> pinchOpt = unitOfMeasureRepository.findByUnit("Pinch");
-
         if(!pinchOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> ounceOpt = unitOfMeasureRepository.findByUnit("Ounce");
-
         if(!ounceOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> dashOpt = unitOfMeasureRepository.findByUnit("Dash");
-
         if(!dashOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> cloveOpt = unitOfMeasureRepository.findByUnit("Clove");
-
         if(!cloveOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> pintOpt = unitOfMeasureRepository.findByUnit("Pint");
-
         if(!pintOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
 
         Optional<UnitOfMeasure> eachOpt = unitOfMeasureRepository.findByUnit("Each");
-
         if(!eachOpt.isPresent()) {
             throw new RuntimeException("Expected unit not found.");
         }
