@@ -10,6 +10,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = "recipes") //resolves the stack overflow problem because of bidirectional realtions
 @Entity
 public class Category {
+    //option + enter -> create test
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

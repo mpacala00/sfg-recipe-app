@@ -113,7 +113,7 @@ public class DataLoader implements CommandLineRunner {
 
         Recipe guacamole = new Recipe();
         guacamole.setDifficulty(Difficulty.EASY);
-        guacamole.setDescription("Simple and easy way to prepare delicious guacamole");
+        guacamole.setDescription("Guacamole");
         guacamole.setPrepTime(10);
         guacamole.setCookTime(0);
         guacamole.setServings(2);
