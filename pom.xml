@@ -47,6 +47,18 @@
 			<groupId>org.projectlombok</groupId> <!--version will be inherited from spring boot parent-->
 			<artifactId>lombok</artifactId>
 		</dependency>
+		<!-- Webjars -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>3.3.7-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.5.1</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/cobertura-maven-plugin -->
 		<!-- for code coverage (tests) -->
 		<dependency>
