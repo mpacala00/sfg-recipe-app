@@ -48,15 +48,11 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 		<!-- Webjars -->
+		<!-- Popper.js & JQuery already in this dep -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>3.3.7-1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>3.5.1</version>
+			<version>4.4.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/cobertura-maven-plugin -->
