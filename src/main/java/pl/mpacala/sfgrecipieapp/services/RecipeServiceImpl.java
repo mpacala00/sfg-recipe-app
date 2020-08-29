@@ -43,6 +43,13 @@ public class RecipeServiceImpl implements RecipeService {
         return recipe;
     }
 
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        //calling other method of this service as an argument
+        return recipeToRecipeCommand.convert( findRecipeById(id) );
+    }
+
     //method that allows to quickly save RecipeCommand objects as Recipe in RecipeRepo
     //by converting to Recipe and back to RecipeCommand after save
     @Override
