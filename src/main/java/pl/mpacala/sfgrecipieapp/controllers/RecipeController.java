@@ -1,5 +1,6 @@
 package pl.mpacala.sfgrecipieapp.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import pl.mpacala.sfgrecipieapp.services.RecipeService;
 
 @RequestMapping("/recipe")
 @Controller
+@Slf4j
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -44,5 +46,13 @@ public class RecipeController {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
 
         return "redirect:/recipe/show/" + savedCommand.getId();
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteById(@PathVariable String id) {
+        log.debug("Deleting id:"+id);
+        recipeService.deleteById(Long.valueOf(id));
+
+        return "redirect:/";
     }
 }
