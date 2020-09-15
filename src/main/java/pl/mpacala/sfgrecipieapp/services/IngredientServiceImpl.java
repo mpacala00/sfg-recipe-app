@@ -12,6 +12,7 @@ import pl.mpacala.sfgrecipieapp.repositories.UnitOfMeasureRepository;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -37,8 +38,8 @@ public class IngredientServiceImpl implements IngredientService {
 
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
-        if(!recipeOptional.isPresent()) {
-            log.debug("Error. Could not find recipe of id: "+recipeId);
+        if (!recipeOptional.isPresent()) {
+            log.debug("Error. Could not find recipe of id: " + recipeId);
         } else {
             Recipe recipe = recipeOptional.get();
 
@@ -46,8 +47,8 @@ public class IngredientServiceImpl implements IngredientService {
                     .filter(ingredient -> ingredient.getId().equals(ingredientId))
                     .map(ingredientToIngredientCommand::convert).findFirst();
 
-            if(!ingredientCommandOptional.isPresent()) {
-                log.debug("Error. Could not find ingredient of id: "+ingredientId+" in the recipe of id: "+recipeId);
+            if (!ingredientCommandOptional.isPresent()) {
+                log.debug("Error. Could not find ingredient of id: " + ingredientId + " in the recipe of id: " + recipeId);
             }
 
             return ingredientCommandOptional.get();
@@ -63,10 +64,10 @@ public class IngredientServiceImpl implements IngredientService {
         //get the recipe from which ingredient is from
         Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
 
-        if(recipeOptional.isEmpty()) {
+        if (recipeOptional.isEmpty()) {
 
             //todo throw exception when not found
-            log.debug("Recipe not found for id: "+command.getRecipeId());
+            log.debug("Recipe not found for id: " + command.getRecipeId());
             return new IngredientCommand();
         } else {
             Recipe recipe = recipeOptional.get();
@@ -78,14 +79,14 @@ public class IngredientServiceImpl implements IngredientService {
                     .filter(ingredient -> ingredient.getId().equals(command.getId()))
                     .findFirst();
 
-            if(ingredientOptional.isPresent()) {
+            if (ingredientOptional.isPresent()) {
                 //setting up ingredient fields from command passed as arg
                 Ingredient ingredientFound = ingredientOptional.get();
                 ingredientFound.setDescription(command.getDescription());
                 ingredientFound.setAmount(command.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository
                         .findById(command.getUom().getId())
-                        .orElseThrow( () -> new RuntimeException("UOM not found")) );
+                        .orElseThrow(() -> new RuntimeException("UOM not found")));
             } else {
                 //if not present add the ingredient from command to the recipe
                 //making the relationship both ways
@@ -102,7 +103,7 @@ public class IngredientServiceImpl implements IngredientService {
                     .findFirst();
 
             //if the optional is empty try to find by exact desc, amount and uom
-            if(savedIngredientOptional.isEmpty()) {
+            if (savedIngredientOptional.isEmpty()) {
                 savedIngredientOptional = savedRecipe.getIngredients().stream()
                         .filter(recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
                         .filter(recipeIngredients -> recipeIngredients.getAmount().equals(command.getAmount()))
@@ -112,5 +113,31 @@ public class IngredientServiceImpl implements IngredientService {
 
             return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }
+    }
+
+    @Override
+    public void deleteById(Long recipeId, Long idToDelete) throws NullPointerException {
+        Set<Ingredient> ingredientSet;
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        Ingredient ingredient = recipeRepository.findById(recipeId).get().getIngredients().stream()
+                //find the one with the idToDelete id
+                .filter(ing -> ing.getId().equals(idToDelete)).findFirst().get();
+        if (ingredient == null || recipeOptional == null) {
+            log.debug("COULD NOT FIND EITHER INGREDIENT OR RECIPE WITH SET ID");
+            throw new NullPointerException();
+        }
+
+        //this method removes the ingredient from hashSet, but does not persists it into db
+        Recipe recipe = recipeOptional.get();
+        ingredientSet = recipe.getIngredients();
+        ingredientSet.remove(ingredient);
+        recipe.setIngredients(ingredientSet);
+
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        recipeRepository.save(recipe);
+        System.out.println(ingredient.getDescription()+"\n");
+
+        savedRecipe.getIngredients().forEach(ingredient1 -> System.out.println(ingredient1.getDescription()));
+        log.debug("Successfully deleted ingredient of id: " + idToDelete);
     }
 }
