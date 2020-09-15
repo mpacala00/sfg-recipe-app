@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import pl.mpacala.sfgrecipieapp.commands.IngredientCommand;
+import pl.mpacala.sfgrecipieapp.commands.RecipeCommand;
+import pl.mpacala.sfgrecipieapp.commands.UnitOfMeasureCommand;
 import pl.mpacala.sfgrecipieapp.services.IngredientService;
 import pl.mpacala.sfgrecipieapp.services.RecipeService;
 import pl.mpacala.sfgrecipieapp.services.UnitOfMeasureService;
@@ -67,5 +70,27 @@ public class IngredientController {
         log.debug("Saved ingredient id: "+command.getId());
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    @GetMapping
+    public String newIngredient(@PathVariable String recipeId, Model model) throws NullPointerException {
+
+        //make sure we have a proper id value
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        if(recipeCommand == null) {
+            throw new NullPointerException();
+        }
+
+        //creating a new ingredient with the id of the recipe assigned to it
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        //init uom
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.findAll());
+        return "recipe/ingredient/ingredientForm";
     }
 }
