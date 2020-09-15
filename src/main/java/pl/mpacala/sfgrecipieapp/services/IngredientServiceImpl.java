@@ -131,7 +131,7 @@ public class IngredientServiceImpl implements IngredientService {
             if(ingredientOptional.isPresent()) {
                 log.debug("found ingredient");
                 Ingredient ingredientToDelete = ingredientOptional.get();
-                //setting the recipe to null was required to remove the relationship
+                //setting the recipe to null is required to remove the relationship
                 ingredientToDelete.setRecipe(null);
                 recipe.getIngredients().remove(ingredientOptional.get());
                 recipeRepository.save(recipe);
@@ -139,26 +139,5 @@ public class IngredientServiceImpl implements IngredientService {
         } else {
             log.debug("recipe with id not found. id: "+recipeId);
         }
-//
-//        Ingredient ingredient = recipeRepository.findById(recipeId).get().getIngredients().stream()
-//                //find the one with the idToDelete id
-//                .filter(ing -> ing.getId().equals(idToDelete)).findFirst().get();
-//        if (ingredient == null || recipeOptional == null) {
-//            log.debug("COULD NOT FIND EITHER INGREDIENT OR RECIPE WITH SET ID");
-//            throw new NullPointerException();
-//        }
-//
-//        //this method removes the ingredient from hashSet, but does not persists it into db
-//
-//        ingredientSet = recipe.getIngredients();
-//        ingredientSet.remove(ingredient);
-//        recipe.setIngredients(ingredientSet);
-//
-//        Recipe savedRecipe = recipeRepository.save(recipe);
-//        recipeRepository.save(recipe);
-//        System.out.println(ingredient.getDescription()+"\n");
-//
-//        savedRecipe.getIngredients().forEach(ingredient1 -> System.out.println(ingredient1.getDescription()));
-//        log.debug("Successfully deleted ingredient of id: " + idToDelete);
     }
 }

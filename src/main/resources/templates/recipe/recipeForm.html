@@ -27,7 +27,7 @@
 <div class="container-fluid" style="margin-top: 20px;">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form th:object="${recipe}" th:action="@{/recipe/}"> <!-- POST on /recipe -->
+            <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> <!-- POST on /recipe -->
                 <input type="hidden" th:field="*{id}"/>
                 <!-- EDIT RECIPE CARD CARD -->
                 <div class="card card-primary">
@@ -71,10 +71,14 @@
                             </div>
                             <div class="col-md-4 form-group">
                                 <label>Difficulty:</label>
-                                <select class="form-control">
-                                    <option>EASY</option>
-                                    <option>MEDIUM</option>
-                                    <option>HARD</option>
+                                <select class="form-control" th:field="*{difficulty}">
+                                    <option th:each="difficulty : ${T(pl.mpacala.sfgrecipieapp.model.Difficulty).values()}"
+                                            th:value="${difficulty.name()}"
+                                            th:text="${difficulty.name()}"></option>
+                                    <!--for previewing w/o thymeleaf-->
+                                    <option th:remove="all">EASY</option>
+                                    <option th:remove="all">MEDIUM</option>
+                                    <option th:remove="all">HARD</option>
                                 </select>
                             </div>
                         </div>
@@ -115,7 +119,7 @@
                                     <li th:remove="all">1 Teaspoon of chocolate</li>
                                     <li th:each="ingredient : ${recipe.ingredients}"
                                         th:text="${(ingredient.getAmount() +
-                                        ' ' + ingredient.uom.getDescription() +
+                                        ' ' + ingredient.uom.getUnit() +
                                         ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
                                     </li>
                                 </ul>
