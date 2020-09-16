@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import pl.mpacala.sfgrecipieapp.commands.IngredientCommand;
 import pl.mpacala.sfgrecipieapp.commands.RecipeCommand;
 import pl.mpacala.sfgrecipieapp.commands.UnitOfMeasureCommand;
@@ -61,7 +62,7 @@ public class IngredientController {
     //it is supposed to be PostMapping but it does not work with post mapping
     //it does with GetMapping
     //im so confused
-    @GetMapping("/recipe/{recipeId}/ingredient")
+    @PostMapping("/recipe/{recipeId}/ingredient")
     public String saveOrUpdateIngredient(@ModelAttribute IngredientCommand command) {
         IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
 

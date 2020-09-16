@@ -27,7 +27,8 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form th:object="${ingredient}" th:action="@{ '/recipe/' + ${ingredient.getRecipeId()} + '/ingredient' }" >
+            <form th:object="${ingredient}" th:action="@{ '/recipe/' + ${ingredient.getRecipeId()} + '/ingredient' }"
+                  method="post">
                 <input type="hidden" th:field="*{id}" /> <!-- for ingredient id -->
                 <div class="card">
 

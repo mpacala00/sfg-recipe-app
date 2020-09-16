@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class RecipeControllerTest {
@@ -61,13 +62,13 @@ public class RecipeControllerTest {
         command.setId(2L);
 
         when(recipeService.saveRecipeCommand(any())).thenReturn(command);
-        mockMvc.perform(get("/recipe")
+        mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED) //mimicing a form post
                 .param("id", "") //setting empty id
                 .param("description", "some string")) //setting description
 
                 .andExpect(status().is3xxRedirection()) //expect status 302
-                .andExpect(view().name("redirect:/recipe/show/2"));
+                .andExpect(view().name("redirect:/recipe/2/show"));
     }
 
     @Test
