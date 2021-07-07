@@ -4,11 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.mpacala.sfgrecipieapp.commands.RecipeCommand;
 import pl.mpacala.sfgrecipieapp.exceptions.NotFoundException;
 import pl.mpacala.sfgrecipieapp.services.RecipeService;
+
+import javax.validation.Valid;
 
 @RequestMapping("/recipe")
 @Controller
@@ -16,6 +19,8 @@ import pl.mpacala.sfgrecipieapp.services.RecipeService;
 public class RecipeController {
 
     private final RecipeService recipeService;
+
+    public static final String RECIPE_FORM_URL = "recipe/recipeForm";
 
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
@@ -41,7 +46,16 @@ public class RecipeController {
 
     //for recipeForm
     @PostMapping
-    public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand) {
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand,
+                               BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(err -> {
+                log.debug(err.toString());
+            });
+
+            return RECIPE_FORM_URL;
+        }
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
 
         return "redirect:/recipe/"+ savedCommand.getId() +"/show";
