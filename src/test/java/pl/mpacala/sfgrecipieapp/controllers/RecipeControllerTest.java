@@ -8,8 +8,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.mpacala.sfgrecipieapp.commands.RecipeCommand;
+import pl.mpacala.sfgrecipieapp.exceptions.NotFoundException;
 import pl.mpacala.sfgrecipieapp.model.Recipe;
 import pl.mpacala.sfgrecipieapp.services.RecipeService;
+
+import javax.swing.text.html.Option;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -91,5 +96,14 @@ public class RecipeControllerTest {
                 .andExpect(view().name("redirect:/"));
 
         verify(recipeService, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void getRecipeByIdNotFound() throws Exception {
+
+        when(recipeService.findRecipeById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
     }
 }

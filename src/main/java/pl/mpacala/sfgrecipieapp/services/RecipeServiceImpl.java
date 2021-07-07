@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 import pl.mpacala.sfgrecipieapp.commands.RecipeCommand;
 import pl.mpacala.sfgrecipieapp.converters.RecipeCommandToRecipe;
 import pl.mpacala.sfgrecipieapp.converters.RecipeToRecipeCommand;
+import pl.mpacala.sfgrecipieapp.exceptions.NotFoundException;
 import pl.mpacala.sfgrecipieapp.model.Recipe;
 import pl.mpacala.sfgrecipieapp.repositories.RecipeRepository;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j //gives us a logger
@@ -37,10 +39,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findRecipeById(Long id) {
-        Recipe recipe = recipeRepository.findById(id).get();
-        if(recipe == null)
-            throw new RuntimeException("No recipe found under this id!");
-        return recipe;
+        Optional<Recipe> recipe = recipeRepository.findById(id);
+
+        if(recipe.isEmpty()) {
+            throw new NotFoundException("Recipe not found");
+        }
+
+        return recipe.get();
     }
 
     @Override
