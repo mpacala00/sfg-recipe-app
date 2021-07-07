@@ -33,7 +33,7 @@ public class RecipeServiceImpl implements RecipeService {
         log.debug("I'm in the service");
         Set<Recipe> recipeSet = new HashSet<>();
 
-        recipeRepository.findAll().iterator().forEachRemaining(recipe -> { recipeSet.add(recipe); });
+        recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
         return recipeSet;
     }
 
@@ -42,7 +42,7 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> recipe = recipeRepository.findById(id);
 
         if(recipe.isEmpty()) {
-            throw new NotFoundException("Recipe not found");
+            throw new NotFoundException("Recipe not found for id value=" + id);
         }
 
         return recipe.get();

@@ -1,10 +1,13 @@
 package pl.mpacala.sfgrecipieapp.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.mpacala.sfgrecipieapp.commands.RecipeCommand;
+import pl.mpacala.sfgrecipieapp.exceptions.NotFoundException;
 import pl.mpacala.sfgrecipieapp.services.RecipeService;
 
 @RequestMapping("/recipe")
@@ -50,5 +53,19 @@ public class RecipeController {
         recipeService.deleteById(Long.valueOf(id));
 
         return "redirect:/";
+    }
+
+    //overrides status of exception class, without it status code would be 200
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound(Exception ex) {
+        log.error("Exception: "+ex.getMessage());
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("404error");
+        mav.addObject("exception", ex);
+
+        return mav;
+
     }
 }
